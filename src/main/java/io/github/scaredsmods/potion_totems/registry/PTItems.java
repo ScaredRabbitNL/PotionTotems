@@ -46,11 +46,8 @@ public class PTItems {
             MobEffect effect = holder.value();
             String totemName =  key.location().getPath() + "_infused_totem" ;
 
-
-
-
             RegistryEntry<Item> totem = ITEMS.register(totemName,
-                    () -> new PotionTotemItem(holder, PTConfig.duration, PTConfig.amplifier));
+                    () -> new PotionTotemItem(holder));
 
             TOTEM_EFFECTS.put(holder, totem);
         });

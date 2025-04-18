@@ -20,7 +20,7 @@ public class PTConfig   {
 
     private static final ModConfigSpec.IntValue AMPLIFIER = BUILDER
             .comment("Determines the level of the potion effect. Ex: Strength II where I is the amplifier. (1 + amplifier)")
-            .defineInRange("amplifier", 1, 1, 5);
+            .defineInRange("amplifier", 1, 0, 5);
 
     public static final ModConfigSpec SPEC = BUILDER.build();
 
