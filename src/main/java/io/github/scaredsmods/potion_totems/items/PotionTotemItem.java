@@ -3,6 +3,8 @@ package io.github.scaredsmods.potion_totems.items;
 import io.github.scaredsmods.potion_totems.config.PTConfig;
 import io.github.scaredsmods.potion_totems.lib.item.TotemItem;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -58,6 +60,14 @@ public class PotionTotemItem extends Item implements TotemItem {
 
     public  Holder<MobEffect> getEffectHolder() {
         return this.extraPotionEffect;
+    }
+
+    public static int getColor(ItemStack stack, int index) {
+        if (index != 0 ) return -1;
+        LocalPlayer player = Minecraft.getInstance().player;
+        int y = ((int) player.getY()) + 64;
+        int color = y * 255 / 384;
+        return (color << 8 | color) << 8 | color;
     }
 
 

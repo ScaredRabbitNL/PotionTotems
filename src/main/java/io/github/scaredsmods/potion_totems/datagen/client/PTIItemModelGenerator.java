@@ -26,10 +26,15 @@ public class PTIItemModelGenerator extends ItemModelProvider {
     @Override
     protected void registerModels() {
 
+
         PTItems.ITEMS.stream().map(RegistryEntry::get).forEach(item -> {
+
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+
+
+
             String itemName = id.getPath();
-            withExistingParent(itemName, mcLoc("item/generated"))
+            withExistingParent(itemName, mcLoc("item/handheld"))
                     .texture("layer0", modLoc("item/base_totem"));
         });
     }

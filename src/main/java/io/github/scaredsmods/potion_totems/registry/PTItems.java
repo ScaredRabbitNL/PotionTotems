@@ -12,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -32,6 +33,8 @@ public class PTItems {
             .build());
 
 
+    public static final ResourcefulRegistry<Item> B_ITEMS = ResourcefulRegistries.create(BuiltInRegistries.ITEM, PotionTotems.MOD_ID);
+    public static final RegistryEntry<Item> BASE_TOTEM =  B_ITEMS.register("base_totem", () -> new PotionTotemItem(MobEffects.ABSORPTION));
 
 
     public static final Map<Holder<MobEffect>, RegistryEntry<Item>> TOTEM_EFFECTS = new HashMap<>();
@@ -46,11 +49,13 @@ public class PTItems {
             MobEffect effect = holder.value();
             String totemName =  key.location().getPath() + "_infused_totem" ;
 
+
             RegistryEntry<Item> totem = ITEMS.register(totemName,
                     () -> new PotionTotemItem(holder));
 
             TOTEM_EFFECTS.put(holder, totem);
         });
         ITEMS.init();
+        B_ITEMS.init();
     }
 }
