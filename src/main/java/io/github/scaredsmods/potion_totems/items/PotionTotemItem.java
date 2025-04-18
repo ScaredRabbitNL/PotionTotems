@@ -17,20 +17,17 @@ public class PotionTotemItem extends Item implements TotemItem {
     private  final Holder<MobEffect> extraPotionEffect;
     private final int duration;
     private final int amplifier;
-    private final int color;
 
 
-
-    public PotionTotemItem(int duration, int amplifier, int color) {
-        this(null, duration, amplifier, color);
+    public PotionTotemItem(int duration, int amplifier) {
+        this(null, duration, amplifier);
     }
 
-    public PotionTotemItem(Holder<MobEffect>  effect, int duration, int amplifier, int color) {
+    public PotionTotemItem(Holder<MobEffect>  effect, int duration, int amplifier) {
         super(new Properties());
         this.extraPotionEffect = effect;
         this.duration = duration;
         this.amplifier = amplifier;
-        this.color = color;
     }
 
 
