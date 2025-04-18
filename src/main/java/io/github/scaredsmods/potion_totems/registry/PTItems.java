@@ -26,14 +26,16 @@ public class PTItems {
 
     public static final ResourcefulRegistry<Item> ITEMS = ResourcefulRegistries.create(BuiltInRegistries.ITEM, PotionTotems.MOD_ID);
     public static final ResourcefulRegistry<CreativeModeTab> TABS = ResourcefulRegistries.create(BuiltInRegistries.CREATIVE_MODE_TAB, PotionTotems.MOD_ID);
+    public static final ResourcefulRegistry<Item> B_ITEMS = ResourcefulRegistries.create(BuiltInRegistries.ITEM, PotionTotems.MOD_ID);
 
     public static final RegistryEntry<CreativeModeTab> TOTEMS = TABS.register("totems", () -> new ResourcefulCreativeModeTab(PotionTotems.id("totems"))
             .setItemIcon(() -> Items.TOTEM_OF_UNDYING)
             .addRegistry(ITEMS)
+            .addRegistry(B_ITEMS)
             .build());
 
 
-    public static final ResourcefulRegistry<Item> B_ITEMS = ResourcefulRegistries.create(BuiltInRegistries.ITEM, PotionTotems.MOD_ID);
+
     public static final RegistryEntry<Item> BASE_TOTEM =  B_ITEMS.register("base_totem", () -> new PotionTotemItem(MobEffects.ABSORPTION));
 
 
@@ -55,7 +57,6 @@ public class PTItems {
 
             TOTEM_EFFECTS.put(holder, totem);
         });
-        ITEMS.init();
-        B_ITEMS.init();
+
     }
 }

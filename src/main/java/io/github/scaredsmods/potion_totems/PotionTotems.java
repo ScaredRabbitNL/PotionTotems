@@ -24,7 +24,9 @@ public class PotionTotems {
 
 
         PTItems.register();
-
+        PTItems.ITEMS.init();
+        PTItems.TABS.init();
+        PTItems.B_ITEMS.init();
 
 
         //NeoForge.EVENT_BUS.register(this);

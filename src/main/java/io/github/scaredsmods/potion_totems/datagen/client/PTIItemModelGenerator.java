@@ -34,8 +34,7 @@ public class PTIItemModelGenerator extends ItemModelProvider {
 
 
             String itemName = id.getPath();
-            withExistingParent(itemName, mcLoc("item/handheld"))
-                    .texture("layer0", modLoc("item/base_totem"));
+            withExistingParent(itemName, ResourceLocation.fromNamespaceAndPath(PotionTotems.MOD_ID,"item/base_totem"));
         });
     }
 }

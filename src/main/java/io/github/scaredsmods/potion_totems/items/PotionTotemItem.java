@@ -65,7 +65,7 @@ public class PotionTotemItem extends Item implements TotemItem {
     public static int getColor(ItemStack stack, int index) {
         if (index != 0 ) return -1;
         LocalPlayer player = Minecraft.getInstance().player;
-        int y = ((int) player.getY()) + 64;
+        int y = (int) player.getY() + 64;
         int color = y * 255 / 384;
         return (color << 8 | color) << 8 | color;
     }
