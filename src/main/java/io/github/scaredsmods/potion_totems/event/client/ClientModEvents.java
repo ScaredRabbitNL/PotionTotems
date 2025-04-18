@@ -12,15 +12,5 @@ import static io.github.scaredsmods.potion_totems.registry.PTItems.TOTEM_EFFECTS
 
 @EventBusSubscriber(modid = PotionTotems.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
-    @SubscribeEvent
-    public static void onRegisterItemColors(RegisterColorHandlersEvent.Item event) {
-        TOTEM_EFFECTS.values().forEach(itemReg -> {
-            Item item = itemReg.get();
-            if (item instanceof PotionTotemItem totem) {
-                event.getItemColors().register((stack, layer) -> {
-                    return layer == 0 ? totem.getColor() : 0xFFFFFFFF;
-                }, totem);
-            }
-        });
-    }
+
 }
