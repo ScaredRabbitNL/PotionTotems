@@ -1,18 +1,14 @@
-package io.github.scaredsmods.potion_totems.items;
+package io.github.scaredsmods.potion_totems.item;
 
 import io.github.scaredsmods.potion_totems.config.PTConfig;
-import io.github.scaredsmods.potion_totems.lib.item.TotemItem;
+import io.github.scaredsmods.rabbilib.api.item.TotemItem;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -62,14 +58,25 @@ public class PotionTotemItem extends Item implements TotemItem {
         return this.extraPotionEffect;
     }
 
-    public static int getColor(ItemStack stack, int index) {
-        if (index != 0 ) return -1;
-        LocalPlayer player = Minecraft.getInstance().player;
-        int y = (int) player.getY() + 64;
-        int color = y * 255 / 384;
-        return (color << 8 | color) << 8 | color;
+    public static int getEffectColor(Holder<MobEffect> effectHolder) {
+        MobEffect effect = effectHolder.value();
+        int baseColor = effect.getColor();
+        return baseColor | 0xFF000000;
     }
 
 
+    public int getColor(ItemStack stack, int layer) {
+        if (layer == 1) {
+            return getColorForStack(stack);
+        }
+        return 0xFFFFFFFF;
+    }
 
+    public static int getColorForStack(ItemStack stack) {
+        if (stack.getItem() instanceof PotionTotemItem item) {
+            Holder<MobEffect> effect = item.getEffectHolder();
+            return getEffectColor(effect);
+        }
+        return 0xFFFFFFFF;
+    }
 }

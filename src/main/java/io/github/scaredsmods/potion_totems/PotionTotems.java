@@ -2,13 +2,12 @@ package io.github.scaredsmods.potion_totems;
 
 import com.mojang.logging.LogUtils;
 import io.github.scaredsmods.potion_totems.config.PTConfig;
-import io.github.scaredsmods.potion_totems.registry.PTItems;
+import io.github.scaredsmods.potion_totems.item.PTItems;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 @Mod(PotionTotems.MOD_ID)
@@ -26,7 +25,7 @@ public class PotionTotems {
         PTItems.register();
         PTItems.ITEMS.init();
         PTItems.TABS.init();
-        PTItems.B_ITEMS.init();
+
 
 
         //NeoForge.EVENT_BUS.register(this);

@@ -27,6 +27,9 @@ repositories {
         name = "Team Resourceful Maven"
         url = "https://maven.teamresourceful.com/repository/maven-public/"
     }
+    maven {
+        url = ("https://repo.repsy.io/mvn/scaredrabbit/scaredsmods")
+    }
 }
 
 base {
@@ -39,7 +42,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     // Specify the version of NeoForge to use.
     version = project.neo_version
-
+    interfaceInjectionData = files("src/main/resources/META-INF/interfaces.json")
     parchment {
         mappingsVersion = project.parchment_mappings_version
         minecraftVersion = project.parchment_minecraft_version
@@ -151,7 +154,7 @@ dependencies {
     //implementation(jarJar("me.shedaniel.cloth:cloth-config-neoforge:$cloth_version"))
     implementation(jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}"))
 
-
+    implementation("io.github.scaredsmods.rabbilib:RabbiLib-NeoForge:${rabbilib_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

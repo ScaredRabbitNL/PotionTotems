@@ -4,10 +4,10 @@
   "package": "io.github.scaredsmods.potion_totems.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "LivingEntityMixin"
+    "RecipeManagerExtension"
   ],
   "client": [
-    "ClientPacketListenerMixin"
+
   ],
   "injectors": {
     "defaultRequire": 1
