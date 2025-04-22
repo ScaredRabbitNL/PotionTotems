@@ -1,4 +1,5 @@
 {
+  "block.potion_totems.infuser": "Infuser",
   "item.potion_totems.absorption_infused_totem": "Absorption Infused Totem",
   "item.potion_totems.bad_omen_infused_totem": "Bad Omen Infused Totem",
   "item.potion_totems.blindness_infused_totem": "Blindness Infused Totem",
@@ -31,6 +32,7 @@
   "item.potion_totems.slowness_infused_totem": "Slowness Infused Totem",
   "item.potion_totems.speed_infused_totem": "Speed Infused Totem",
   "item.potion_totems.strength_infused_totem": "Strength Infused Totem",
+  "item.potion_totems.totem_base": "Totem Base",
   "item.potion_totems.trial_omen_infused_totem": "Trial Omen Infused Totem",
   "item.potion_totems.unluck_infused_totem": "Bad Luck Infused Totem",
   "item.potion_totems.water_breathing_infused_totem": "Water Breathing Infused Totem",

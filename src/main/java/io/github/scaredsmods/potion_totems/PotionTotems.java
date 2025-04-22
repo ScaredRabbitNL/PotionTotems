@@ -2,7 +2,11 @@ package io.github.scaredsmods.potion_totems;
 
 import com.mojang.logging.LogUtils;
 import io.github.scaredsmods.potion_totems.config.PTConfig;
-import io.github.scaredsmods.potion_totems.item.PTItems;
+import io.github.scaredsmods.potion_totems.registry.PTBlockEntities;
+import io.github.scaredsmods.potion_totems.registry.PTBlocks;
+import io.github.scaredsmods.potion_totems.registry.PTItems;
+import io.github.scaredsmods.potion_totems.registry.PTRecipes;
+import io.github.scaredsmods.potion_totems.screen.PTMenuTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -21,14 +25,15 @@ public class PotionTotems {
     public PotionTotems(IEventBus modEventBus, ModContainer modContainer) {
 
 
-
+        PTBlocks.BLOCKS.init();
+        PTBlockEntities.BLOCK_ENTITIES.init();
         PTItems.register();
         PTItems.ITEMS.init();
         PTItems.TABS.init();
+        PTMenuTypes.MENUS.init();
+        PTRecipes.RECIPE_SERIALIZERS.init();
+        PTRecipes.RECIPE_TYPES.init();
 
-
-
-        //NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, PTConfig.SPEC);
     }
 

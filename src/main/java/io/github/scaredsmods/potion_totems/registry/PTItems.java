@@ -1,14 +1,16 @@
-package io.github.scaredsmods.potion_totems.item;
+package io.github.scaredsmods.potion_totems.registry;
 
 import com.teamresourceful.resourcefullib.common.item.tabs.ResourcefulCreativeModeTab;
 import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.item.PotionTotemItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -24,14 +26,13 @@ public class PTItems {
     public static final RegistryEntry<CreativeModeTab> TOTEMS = TABS.register("totems", () -> new ResourcefulCreativeModeTab(PotionTotems.id("totems"))
             .setItemIcon(() -> PTItems.BASE_TOTEM.get())
             .addRegistry(ITEMS)
+            .addRegistry(PTBlocks.BLOCKS)
             .build());
 
 
+
     public static final RegistryEntry<Item> BASE_TOTEM = ITEMS.register("totem_base", PotionTotemItem::new);
-
-
-
-
+    public static final RegistryEntry<Item> INFUSER_BLOCK_ITEM = ITEMS.register("infuser", () -> new BlockItem(PTBlocks.INFUSER_BLOCK.get(), new Item.Properties()));
 
     public static final Map<Holder<MobEffect>, RegistryEntry<Item>> TOTEM_EFFECTS = new HashMap<>();
     public static void register() {

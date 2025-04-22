@@ -4,6 +4,7 @@ package io.github.scaredsmods.potion_totems.datagen;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.datagen.client.PTEnLanguageGenerator;
 import io.github.scaredsmods.potion_totems.datagen.client.PTIItemModelGenerator;
+import io.github.scaredsmods.potion_totems.datagen.server.PTRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -26,6 +27,7 @@ public class DataGenerators {
 
         generator.addProvider(event.includeClient(), new PTIItemModelGenerator(packOutput, existingFileHelper));
         generator.addProvider(true, new PTEnLanguageGenerator(packOutput));
+        generator.addProvider(event.includeServer(), new PTRecipeProvider(packOutput, lookupProvider));
 
     }
 }

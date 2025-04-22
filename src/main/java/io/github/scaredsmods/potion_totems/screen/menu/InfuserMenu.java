@@ -1,7 +1,8 @@
-package io.github.scaredsmods.potion_totems.screen;
+package io.github.scaredsmods.potion_totems.screen.menu;
 
-import io.github.scaredsmods.potion_totems.block.PTBlocks;
-import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.BaseInfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.registry.PTBlocks;
+import io.github.scaredsmods.potion_totems.screen.PTMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,29 +14,34 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class InfuserMenu extends AbstractContainerMenu {
-    public final InfuserBlockEntity blockEntity;
+
+    public final BaseInfuserBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
 
-    public InfuserMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+    public InfuserMenu(int containerId, Inventory pInv, FriendlyByteBuf extraData) {
+        this(containerId, pInv, pInv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
-    public InfuserMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(PTScreens.INFUSER_MENU.get(), pContainerId);
-        this.blockEntity = ((InfuserBlockEntity) entity);
-        this.level = inv.player.level();
+
+    public InfuserMenu(int containerId, Inventory pInv, BlockEntity entity, ContainerData data) {
+        super(PTMenuTypes.INFUSER_MENU.get(), containerId);
+        this.blockEntity = (BaseInfuserBlockEntity) entity;
+        this.level = pInv.player.level();
         this.data = data;
 
-        addPlayerInventory(inv);
-        addPlayerHotbar(inv);
+        addPlayerHotbar(pInv);
+        addPlayerInventory(pInv);
 
-        //this.addSlot(new SlotItemHandler(blockEntity.itemHandler, 0, 54, 34));
-        //this.addSlot(new SlotItemHandler(blockEntity.itemHandler, 1, 104, 34));
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 0, 17, 17));
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 1, 17, 53));
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 2, 141, 14));
+        this.addSlot(new SlotItemHandler(blockEntity.itemStackHandler, 3, 141, 56));
 
         addDataSlots(data);
-    }
 
+
+    }
 
     public boolean isCrafting() {
         return data.get(0) > 0;
@@ -44,7 +50,7 @@ public class InfuserMenu extends AbstractContainerMenu {
     public int getScaledArrowProgress() {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);
-        int arrowPixelSize = 24;
+        int arrowPixelSize = 96;
 
         return maxProgress != 0 && progress != 0 ? progress * arrowPixelSize / maxProgress : 0;
     }
@@ -66,7 +72,6 @@ public class InfuserMenu extends AbstractContainerMenu {
 
     // THIS YOU HAVE TO DEFINE!
     private static final int TE_INVENTORY_SLOT_COUNT = 4;  // must be the number of slots you have!
-
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {

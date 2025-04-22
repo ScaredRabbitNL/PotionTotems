@@ -2,7 +2,7 @@ package io.github.scaredsmods.potion_totems.datagen.client;
 
 import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.item.PTItems;
+import io.github.scaredsmods.potion_totems.registry.PTItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;

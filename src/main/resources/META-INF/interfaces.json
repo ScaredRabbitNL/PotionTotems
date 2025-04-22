@@ -1,5 +1,5 @@
 {
   "net/minecraft/world/item/crafting/RecipeManager": [
-    "io/github/scaredsmods/potion_totems/mixin/RecipeManagerExtensionGetter"
+    "io/github/scaredsmods/potion_totems/getter/RecipeManagerExtensionGetter"
   ]
 }

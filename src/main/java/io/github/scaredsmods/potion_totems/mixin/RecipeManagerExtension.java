@@ -3,6 +3,7 @@ package io.github.scaredsmods.potion_totems.mixin;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import io.github.scaredsmods.potion_totems.getter.RecipeManagerExtensionGetter;
 import io.github.scaredsmods.rabbilib.api.crafting.recipe.RabbiRecipe;
 import io.github.scaredsmods.rabbilib.api.crafting.recipe.RabbiRecipeHolder;
 import io.github.scaredsmods.rabbilib.api.crafting.recipe.RabbiRecipeInput;

@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-19T07:04:54.6190822	Item Models: potion_totems
+// 1.21.1	2025-04-22T10:35:35.2097781	Item Models: potion_totems
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/absorption_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/bad_omen_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/blindness_infused_totem.json
@@ -12,6 +12,7 @@ cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/health
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/hero_of_the_village_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/hunger_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/infested_infused_totem.json
+cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/infuser.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/instant_damage_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/instant_health_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/invisibility_infused_totem.json
@@ -31,6 +32,7 @@ cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/slowne
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/slow_falling_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/speed_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/strength_infused_totem.json
+cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/totem_base.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/trial_omen_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/unluck_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/water_breathing_infused_totem.json
