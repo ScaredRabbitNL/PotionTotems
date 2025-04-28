@@ -14,13 +14,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public record InfuserRecipe(Ingredient input_1, Ingredient input_2, ItemStack output) implements Recipe<InfuserRecipeInput> {
+public record InfuserRecipe(Ingredient input1, Ingredient input2, ItemStack output) implements Recipe<InfuserRecipeInput> {
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
-        list.add(input_1);
-        list.add(input_2);
+        list.add(input1);
+        list.add(input2);
         return list;
     }
 
@@ -29,16 +29,16 @@ public record InfuserRecipe(Ingredient input_1, Ingredient input_2, ItemStack ou
         if (level.isClientSide()) {
             return false;
         }
-        return input_1.test(infuserRecipeInput.getItem(0)) && input_2.test(infuserRecipeInput.getItem(1));
+        return input1.test(infuserRecipeInput.getItem(0)) && input2.test(infuserRecipeInput.getItem(1));
     }
 
     @Override
     public ItemStack assemble(InfuserRecipeInput input, HolderLookup.Provider registries) {
-        return null;
+        return output.copy();
     }
 
     @Override
-    public boolean canCraftInDimensions(int i, int i1) {
+    public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 
@@ -62,15 +62,15 @@ public record InfuserRecipe(Ingredient input_1, Ingredient input_2, ItemStack ou
 
 
         public static final MapCodec<InfuserRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_1").forGetter(InfuserRecipe::input_1),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_2").forGetter(InfuserRecipe::input_2),
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_1").forGetter(InfuserRecipe::input1),
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_2").forGetter(InfuserRecipe::input2),
                 ItemStack.CODEC.fieldOf("result").forGetter(InfuserRecipe::output)
         ).apply(inst, InfuserRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, InfuserRecipe> STREAM_CODEC =
                 StreamCodec.composite(
-                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::input_1,
-                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::input_2,
+                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::input1,
+                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::input2,
                         ItemStack.STREAM_CODEC, InfuserRecipe::output,
                         InfuserRecipe::new);
 
