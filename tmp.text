@@ -1,7 +1,4 @@
-
-
-class Null {
-    public static int getColorForStack(ItemStack stack) {
+ public static int getColorForStack(ItemStack stack) {
         PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
         if (contents != null) {
             return contents.getColor() | 0xFF000000;
@@ -21,4 +18,3 @@ class Null {
             return 0xFFFFFFFF;
         });
     });
-}
