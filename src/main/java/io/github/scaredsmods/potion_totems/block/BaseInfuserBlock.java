@@ -3,7 +3,7 @@ package io.github.scaredsmods.potion_totems.block;
 import com.mojang.serialization.MapCodec;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.block.entity.BaseInfuserBlockEntity;
-import io.github.scaredsmods.potion_totems.registry.PTBlockEntities;
+import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;

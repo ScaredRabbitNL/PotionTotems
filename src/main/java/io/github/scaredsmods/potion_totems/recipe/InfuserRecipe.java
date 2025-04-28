@@ -2,30 +2,26 @@ package io.github.scaredsmods.potion_totems.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.scaredsmods.potion_totems.registry.PTRecipes;
-import io.github.scaredsmods.rabbilib.api.crafting.recipe.RabbiRecipe;
-import io.github.scaredsmods.rabbilib.api.crafting.recipe.RabbiRecipeSerializer;
-import io.github.scaredsmods.rabbilib.api.crafting.recipe.RabbiRecipeType;
+import io.github.scaredsmods.potion_totems.init.PTRecipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.crafting.ICustomIngredient;
-import net.neoforged.neoforge.common.crafting.IngredientType;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-public record InfuserRecipe(Ingredient inputItem1, Ingredient inputItem2, ItemStack output) implements RabbiRecipe<InfuserRecipeInput> {
+public record InfuserRecipe(Ingredient input_1, Ingredient input_2, ItemStack output) implements Recipe<InfuserRecipeInput> {
 
     @Override
-    public List<Ingredient> getIngredients() {
-        return List.of(inputItem1, inputItem2);
+    public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> list = NonNullList.create();
+        list.add(input_1);
+        list.add(input_2);
+        return list;
     }
 
     @Override
@@ -33,15 +29,12 @@ public record InfuserRecipe(Ingredient inputItem1, Ingredient inputItem2, ItemSt
         if (level.isClientSide()) {
             return false;
         }
-        return inputItem1.test(infuserRecipeInput.getItems(0).getFirst()) && inputItem2.test(infuserRecipeInput.getItems(1).get(1));
+        return input_1.test(infuserRecipeInput.getItem(0)) && input_2.test(infuserRecipeInput.getItem(1));
     }
 
     @Override
-    public NonNullList<ItemStack> assemble(InfuserRecipeInput infuserRecipeInput, HolderLookup.Provider provider) {
-        NonNullList<ItemStack> list = NonNullList.create();
-        list.add(output.copy());
-        list.add(new ItemStack(Items.GLASS_BOTTLE));
-        return list;
+    public ItemStack assemble(InfuserRecipeInput input, HolderLookup.Provider registries) {
+        return null;
     }
 
     @Override
@@ -50,38 +43,34 @@ public record InfuserRecipe(Ingredient inputItem1, Ingredient inputItem2, ItemSt
     }
 
     @Override
-    public NonNullList<ItemStack> getResults(HolderLookup.Provider provider) {
-        NonNullList<ItemStack> list = NonNullList.create();
-        list.add(output);
-        list.add(new ItemStack(Items.GLASS_BOTTLE));
-        return list;
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
+        return output;
     }
 
     @Override
-    public RabbiRecipeSerializer<?> getSerializer() {
-        return PTRecipes.INFUSER_SERIALIZER.get();
+    public RecipeSerializer<?> getSerializer() {
+        return PTRecipes.INFUSER_RECIPE_SERIALIZER.get();
     }
 
     @Override
-    public RabbiRecipeType<?> getType() {
-        return PTRecipes.INFUSER_TYPE.get();
+    public RecipeType<?> getType() {
+        return PTRecipes.INFUSER_RECIPE_TYPE.get();
     }
 
-    public static class Serializer implements RabbiRecipeSerializer<InfuserRecipe> {
-
+    public static class Serializer implements RecipeSerializer<InfuserRecipe> {
 
 
 
         public static final MapCodec<InfuserRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_1").forGetter(InfuserRecipe::inputItem1),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_2").forGetter(InfuserRecipe::inputItem2),
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_1").forGetter(InfuserRecipe::input_1),
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient_2").forGetter(InfuserRecipe::input_2),
                 ItemStack.CODEC.fieldOf("result").forGetter(InfuserRecipe::output)
         ).apply(inst, InfuserRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, InfuserRecipe> STREAM_CODEC =
                 StreamCodec.composite(
-                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::inputItem1,
-                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::inputItem2,
+                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::input_1,
+                        Ingredient.CONTENTS_STREAM_CODEC, InfuserRecipe::input_2,
                         ItemStack.STREAM_CODEC, InfuserRecipe::output,
                         InfuserRecipe::new);
 
@@ -96,4 +85,6 @@ public record InfuserRecipe(Ingredient inputItem1, Ingredient inputItem2, ItemSt
             return STREAM_CODEC;
         }
     }
+
+
 }

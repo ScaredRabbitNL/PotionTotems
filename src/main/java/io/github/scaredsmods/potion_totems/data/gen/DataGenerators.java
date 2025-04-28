@@ -1,10 +1,9 @@
-package io.github.scaredsmods.potion_totems.datagen;
+package io.github.scaredsmods.potion_totems.data.gen;
 
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.datagen.client.PTEnLanguageGenerator;
-import io.github.scaredsmods.potion_totems.datagen.client.PTIItemModelGenerator;
-import io.github.scaredsmods.potion_totems.datagen.server.PTRecipeProvider;
+import io.github.scaredsmods.potion_totems.data.gen.provider.PTEnLanguageGenerator;
+import io.github.scaredsmods.potion_totems.data.gen.provider.PTIItemModelGenerator;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -18,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(modid = PotionTotems.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 
+
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
@@ -25,9 +25,11 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+
         generator.addProvider(event.includeClient(), new PTIItemModelGenerator(packOutput, existingFileHelper));
-        generator.addProvider(true, new PTEnLanguageGenerator(packOutput));
-        generator.addProvider(event.includeServer(), new PTRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(event.includeClient(), new PTEnLanguageGenerator(packOutput));
+
 
     }
+
 }

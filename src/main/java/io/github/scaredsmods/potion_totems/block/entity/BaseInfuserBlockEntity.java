@@ -1,18 +1,14 @@
 package io.github.scaredsmods.potion_totems.block.entity;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.item.PotionTotemItem;
+import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
+import io.github.scaredsmods.potion_totems.init.PTRecipes;
 import io.github.scaredsmods.potion_totems.recipe.InfuserRecipe;
 import io.github.scaredsmods.potion_totems.recipe.InfuserRecipeInput;
-import io.github.scaredsmods.potion_totems.registry.PTBlockEntities;
-import io.github.scaredsmods.potion_totems.registry.PTItems;
-import io.github.scaredsmods.potion_totems.registry.PTRecipes;
 import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
-import io.github.scaredsmods.rabbilib.api.blockentity.RabbiCraftingBlockEntity;
-import io.github.scaredsmods.rabbilib.api.crafting.recipe.RabbiRecipeHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -21,16 +17,13 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,7 +31,6 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -96,7 +88,6 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
                 craftItem();
                 resetProgress();
             }
-
         } else {
             resetProgress();
         }
@@ -104,9 +95,9 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
 
 
     public void craftItem() {
-        Optional<RabbiRecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
-        ItemStack output1 = recipe.get().value().output();
-        ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
+        Optional<RecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
+        ItemStack output2 = recipe.get().value().output();
+        ItemStack output1 = new ItemStack(Items.GLASS_BOTTLE, 1);
 
         itemStackHandler.extractItem(INPUT_SLOT_1, 1, false);
         itemStackHandler.extractItem(INPUT_SLOT_2, 1, false);
@@ -133,20 +124,24 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
 
 
     protected boolean hasRecipe() {
-        Optional<RabbiRecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
         if (recipe.isEmpty()) {
             return false;
         }
 
+        ItemStack output1 = new ItemStack(Items.GLASS_BOTTLE, 1);
+        ItemStack output2 = recipe.get().value().output();
 
-        ItemStack output1 = recipe.get().value().output();
-        ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
 
         return canInsertAmountIntoOutputSlot(OUTPUT_SLOT_1, output1.getCount()) && canInsertAmountIntoOutputSlot(OUTPUT_SLOT_2, output2.getCount()) && canInsertItemIntoOutputSlot(output1, output2);
     }
 
-    private Optional<RabbiRecipeHolder<InfuserRecipe>> getCurrentRecipe() {
-        return this.level.getRecipeManager().getRecipeFor(PTRecipes.INFUSER_TYPE.get(), new InfuserRecipeInput(itemStackHandler.getStackInSlot(INPUT_SLOT_1), itemStackHandler.getStackInSlot(INPUT_SLOT_2)), level);
+    private Optional<RecipeHolder<InfuserRecipe>> getCurrentRecipe() {
+
+        NonNullList<ItemStack> inputs = NonNullList.create();
+        inputs.add(itemStackHandler.getStackInSlot(INPUT_SLOT_1));
+        inputs.add(itemStackHandler.getStackInSlot(INPUT_SLOT_2));
+        return this.level.getRecipeManager().getRecipeFor(PTRecipes.INFUSER_RECIPE_TYPE.get(), new InfuserRecipeInput(inputs), level);
     }
 
 

@@ -1,4 +1,4 @@
-package io.github.scaredsmods.potion_totems.registry;
+package io.github.scaredsmods.potion_totems.init;
 
 import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
@@ -12,8 +12,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 public class PTBlocks {
 
     public static final ResourcefulRegistry<Block> BLOCKS = ResourcefulRegistries.create(BuiltInRegistries.BLOCK, PotionTotems.MOD_ID);
-    public static final RegistryEntry<Block> INFUSER_BLOCK = BLOCKS.register("infuser", () -> new BaseInfuserBlock(BlockBehaviour.Properties
-            .of()));
 
-
+    public static final RegistryEntry<Block> INFUSER = BLOCKS.register("infuser", () -> new BaseInfuserBlock(BlockBehaviour.Properties.of()));
 }

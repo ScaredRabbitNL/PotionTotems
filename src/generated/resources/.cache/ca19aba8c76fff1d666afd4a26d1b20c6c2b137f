@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-22T10:35:35.2097781	Item Models: potion_totems
+// 1.21.1	2025-04-28T12:39:06.8191155	Item Models: potion_totems
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/absorption_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/bad_omen_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/blindness_infused_totem.json
@@ -32,7 +32,6 @@ cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/slowne
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/slow_falling_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/speed_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/strength_infused_totem.json
-cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/totem_base.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/trial_omen_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/unluck_infused_totem.json
 cb60354fbfc66bd353515ca0b41daa52aa5c0f83 assets/potion_totems/models/item/water_breathing_infused_totem.json

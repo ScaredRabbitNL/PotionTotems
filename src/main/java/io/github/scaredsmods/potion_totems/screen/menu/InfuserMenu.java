@@ -1,8 +1,9 @@
 package io.github.scaredsmods.potion_totems.screen.menu;
 
 import io.github.scaredsmods.potion_totems.block.entity.BaseInfuserBlockEntity;
-import io.github.scaredsmods.potion_totems.registry.PTBlocks;
-import io.github.scaredsmods.potion_totems.screen.PTMenuTypes;
+
+import io.github.scaredsmods.potion_totems.init.PTBlocks;
+import io.github.scaredsmods.potion_totems.init.PTMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 
 public class InfuserMenu extends AbstractContainerMenu {
 
@@ -109,7 +109,7 @@ public class InfuserMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, PTBlocks.INFUSER_BLOCK.get());
+                pPlayer, PTBlocks.INFUSER.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

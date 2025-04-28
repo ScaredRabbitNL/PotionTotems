@@ -4,12 +4,11 @@ package io.github.scaredsmods.potion_totems.config;
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.config.IConfigSpec;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 @EventBusSubscriber(modid = PotionTotems.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public class PTConfig   {
+public class PTConfig {
 
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();

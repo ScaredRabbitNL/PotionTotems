@@ -1,0 +1,24 @@
+
+
+class Null {
+    public static int getColorForStack(ItemStack stack) {
+        PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
+        if (contents != null) {
+            return contents.getColor() | 0xFF000000;
+        }
+        return 0xFFFFFFFF;
+    }
+
+    public int getColor(ItemStack stack, int layer) {
+        if (layer == 1) return getColorForStack(stack);
+        return 0xFFFFFFFF;
+    }
+    TOTEM_EFFECTS.forEach(holder -> {
+        event.register((stack, layer) -> {
+            if (layer == 1) {
+                return PotionTotemItem.getColorForStack(stack);
+            }
+            return 0xFFFFFFFF;
+        });
+    });
+}

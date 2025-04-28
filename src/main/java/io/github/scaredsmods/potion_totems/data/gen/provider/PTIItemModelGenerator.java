@@ -1,9 +1,8 @@
-package io.github.scaredsmods.potion_totems.datagen.client;
+package io.github.scaredsmods.potion_totems.data.gen.provider;
 
 import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
-
 import io.github.scaredsmods.potion_totems.PotionTotems;
-import io.github.scaredsmods.potion_totems.registry.PTItems;
+import io.github.scaredsmods.potion_totems.init.PTItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +17,7 @@ public class PTIItemModelGenerator extends ItemModelProvider {
     }
 
     @Override
-    protected void registerModels() {
+    public  void registerModels() {
 
 
         PTItems.ITEMS.stream().map(RegistryEntry::get).forEach(item -> {
@@ -26,6 +25,8 @@ public class PTIItemModelGenerator extends ItemModelProvider {
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
             String itemName = id.getPath();
 
+
+            if (itemName.equals("totem_base")) return;
 
             withExistingParent(itemName, ResourceLocation.fromNamespaceAndPath(PotionTotems.MOD_ID,"item/totem_base"));
         });
