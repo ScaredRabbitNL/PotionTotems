@@ -26,7 +26,7 @@ public class PTItems {
 
 
 
-    //public static final RegistryEntry<Item> INFUSED_TOTEM = ITEMS.register("totem", PotionTotemItem::new);
+    public static final RegistryEntry<Item> INFUSED_TOTEM = ITEMS.register("infused_totem", PotionTotemItem::new);
     public static final RegistryEntry<Item> INFUSER_BLOCK_ITEM = ITEMS.register("infuser", () -> new BlockItem(PTBlocks.INFUSER.get(), new Item.Properties()));
 
 
@@ -42,25 +42,7 @@ public class PTItems {
 
 
 
-    public static final Map<Holder<MobEffect>, RegistryEntry<Item>> TOTEM_EFFECTS = new HashMap<>();
-    public static void register() {
 
-        BuiltInRegistries.MOB_EFFECT.holders().forEach(holder -> {
-            Optional<ResourceKey<MobEffect>> keyOpt = holder.unwrapKey();
-            if (keyOpt.isEmpty()) return;
-
-            ResourceKey<MobEffect> key = holder.getKey();
-            MobEffect effect = holder.value();
-            String totemName =  key.location().getPath() + "_infused_totem" ;
-
-
-            RegistryEntry<Item> totem = ITEMS.register(totemName,
-                    () -> new PotionTotemItem(holder));
-
-            TOTEM_EFFECTS.put(holder, totem);
-        });
-
-    }
 
 
 

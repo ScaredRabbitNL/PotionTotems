@@ -1,12 +1,7 @@
 {
   "type": "potion_totems:infuser",
-  "ingredient_1": {
-    "item": "minecraft:totem_of_undying"
-  },
-  "ingredient_2": {
-    "item": "minecraft:spruce_log"
-  },
-  "result": {
-    "id": "minecraft:diamond"
-  }
+  "ingredients": [
+    { "tag": "potion_totems:totems" },
+    { "item": "minecraft:glass_bottle" }
+  ]
 }

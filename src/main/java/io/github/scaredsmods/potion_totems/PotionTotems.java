@@ -20,7 +20,7 @@ public class PotionTotems {
 
     public PotionTotems(IEventBus bus, ModContainer container) {
 
-        PTItems.register();
+
         PTItems.ITEMS.init();
         PTItems.TABS.init();
         PTBlocks.BLOCKS.init();

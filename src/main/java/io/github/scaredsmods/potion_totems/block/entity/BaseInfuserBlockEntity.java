@@ -2,6 +2,7 @@ package io.github.scaredsmods.potion_totems.block.entity;
 
 import io.github.scaredsmods.potion_totems.PotionTotems;
 import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
+import io.github.scaredsmods.potion_totems.init.PTItems;
 import io.github.scaredsmods.potion_totems.init.PTRecipes;
 import io.github.scaredsmods.potion_totems.recipe.InfuserRecipe;
 import io.github.scaredsmods.potion_totems.recipe.InfuserRecipeInput;
@@ -9,6 +10,7 @@ import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -95,17 +97,31 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
 
 
     public void craftItem() {
-        Optional<RecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
-        ItemStack output2 = recipe.get().value().output();
-        ItemStack output1 = new ItemStack(Items.GLASS_BOTTLE, 1);
+        Optional<RecipeHolder<InfuserRecipe>> recipeOpt = getCurrentRecipe();
+        if (recipeOpt.isEmpty()) return;
+
+        NonNullList<ItemStack> inputs = NonNullList.of(
+                ItemStack.EMPTY,
+                itemStackHandler.getStackInSlot(INPUT_SLOT_1),
+                itemStackHandler.getStackInSlot(INPUT_SLOT_2)
+        );
+        InfuserRecipeInput input = new InfuserRecipeInput(inputs);
+        ItemStack result = recipeOpt.get().value().assemble(input, level.registryAccess());
+
+        if (result.isEmpty()) return;
 
         itemStackHandler.extractItem(INPUT_SLOT_1, 1, false);
         itemStackHandler.extractItem(INPUT_SLOT_2, 1, false);
 
-        itemStackHandler.setStackInSlot(OUTPUT_SLOT_1, new ItemStack(output1.getItem(), itemStackHandler.getStackInSlot(OUTPUT_SLOT_1).getCount() + output1.getCount()));
-        itemStackHandler.setStackInSlot(OUTPUT_SLOT_2, new ItemStack(output2.getItem(), itemStackHandler.getStackInSlot(OUTPUT_SLOT_2).getCount() + output2.getCount()));
+        ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
+        itemStackHandler.setStackInSlot(OUTPUT_SLOT_1,
+                new ItemStack(bottle.getItem(), itemStackHandler.getStackInSlot(OUTPUT_SLOT_1).getCount() + 1));
 
+        itemStackHandler.setStackInSlot(OUTPUT_SLOT_2,
+                new ItemStack(result.getItem(), itemStackHandler.getStackInSlot(OUTPUT_SLOT_2).getCount() + 1));
     }
+
+
 
     public void resetProgress() {
         this.progress = 0;
@@ -122,19 +138,24 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
         progress++;
     }
 
-
     protected boolean hasRecipe() {
-        Optional<RecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
-        if (recipe.isEmpty()) {
-            return false;
-        }
+        Optional<RecipeHolder<InfuserRecipe>> recipeOpt = getCurrentRecipe();
+        if (recipeOpt.isEmpty()) return false;
 
-        ItemStack output1 = new ItemStack(Items.GLASS_BOTTLE, 1);
-        ItemStack output2 = recipe.get().value().output();
+        NonNullList<ItemStack> inputs = NonNullList.of(
+                ItemStack.EMPTY,
+                itemStackHandler.getStackInSlot(INPUT_SLOT_1),
+                itemStackHandler.getStackInSlot(INPUT_SLOT_2)
+        );
+        InfuserRecipeInput input = new InfuserRecipeInput(inputs);
+        ItemStack result = recipeOpt.get().value().assemble(input, level.registryAccess());
+        if (result.isEmpty()) return false;
 
-
-        return canInsertAmountIntoOutputSlot(OUTPUT_SLOT_1, output1.getCount()) && canInsertAmountIntoOutputSlot(OUTPUT_SLOT_2, output2.getCount()) && canInsertItemIntoOutputSlot(output1, output2);
+        return canInsertAmountIntoOutputSlot(OUTPUT_SLOT_1, 1) &&
+                canInsertAmountIntoOutputSlot(OUTPUT_SLOT_2, 1) &&
+                canInsertItemIntoOutputSlot(new ItemStack(Items.GLASS_BOTTLE), result);
     }
+
 
     private Optional<RecipeHolder<InfuserRecipe>> getCurrentRecipe() {
 
