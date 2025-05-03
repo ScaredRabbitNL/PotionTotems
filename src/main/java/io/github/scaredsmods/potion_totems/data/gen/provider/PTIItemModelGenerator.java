@@ -26,9 +26,10 @@ public class PTIItemModelGenerator extends ItemModelProvider {
             String itemName = id.getPath();
 
 
-            if (itemName.equals("totem_base")) return;
+            if (itemName.equals("totem_base") || itemName.equals("infuser")) return;
 
             withExistingParent(itemName, ResourceLocation.fromNamespaceAndPath(PotionTotems.MOD_ID,"item/totem_base"));
         });
+
     }
 }

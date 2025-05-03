@@ -3,7 +3,10 @@ package io.github.scaredsmods.potion_totems;
 
 import com.mojang.logging.LogUtils;
 import io.github.scaredsmods.potion_totems.config.PTConfig;
-import io.github.scaredsmods.potion_totems.init.*;
+import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
+import io.github.scaredsmods.potion_totems.init.PTBlocks;
+import io.github.scaredsmods.potion_totems.init.PTItems;
+import io.github.scaredsmods.potion_totems.init.PTMenuTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -26,8 +29,7 @@ public class PotionTotems {
         PTBlocks.BLOCKS.init();
         PTBlockEntities.TYPES.init();
         PTMenuTypes.MENUS.init();
-        PTRecipes.register();
-        PTDataComponents.DATA_COMPONENT_TYPES.init();
+
 
         container.registerConfig(ModConfig.Type.COMMON, PTConfig.SPEC);
     }

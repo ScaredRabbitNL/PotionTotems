@@ -1,4 +1,6 @@
 {
   "block.potion_totems.infuser": "Infuser",
-  "item.potion_totems.infused_totem": "Infused Totem"
+  "item.potion_totems.infused_totem": "Infused Totem",
+  "item.potion_totems.infused_totem.effect.empty": "Infused Totem",
+  "itemGroup.potion_totems.totems": "PotionTotems: Totems"
 }

@@ -28,11 +28,11 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        BlockTagsProvider blockTagsProvider = new PTBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
+        //BlockTagsProvider blockTagsProvider = new PTBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
 
         generator.addProvider(event.includeClient(), new PTIItemModelGenerator(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new PTEnLanguageGenerator(packOutput));
-        generator.addProvider(event.includeServer(), new PTItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+        //generator.addProvider(event.includeServer(), new PTItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
 
 
     }

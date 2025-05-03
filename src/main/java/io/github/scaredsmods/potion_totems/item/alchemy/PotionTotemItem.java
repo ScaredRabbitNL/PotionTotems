@@ -6,26 +6,25 @@ import io.github.scaredsmods.potion_totems.item.TotemItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 public class PotionTotemItem extends PotionItem implements TotemItem {
 
 
     public PotionTotemItem() {
-        super(new Properties().stacksTo(1));
+        super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 
     }
 
@@ -49,10 +48,14 @@ public class PotionTotemItem extends PotionItem implements TotemItem {
                 entity.setHealth(entity.getMaxHealth() / 2F);
                 entity.removeAllEffects();
 
+
                 PotionContents potioncontents = stack.get(DataComponents.POTION_CONTENTS);
-                potioncontents.customEffects().stream().map(MobEffectInstance::getEffect).forEach(effectHolder -> {
-                    entity.addEffect(new MobEffectInstance(effectHolder, PTConfig.duration,PTConfig.amplifier));
-                });
+                if (potioncontents != null ) {
+                    potioncontents.customEffects().stream().map(MobEffectInstance::getEffect).forEach(effectHolder -> {
+                        entity.addEffect(new MobEffectInstance(effectHolder, PTConfig.duration,PTConfig.amplifier));
+                    });
+
+                }
 
             }
             entity.level().broadcastEntityEvent(entity, (byte) 35);
@@ -61,20 +64,11 @@ public class PotionTotemItem extends PotionItem implements TotemItem {
     }
 
 
-
-    @Override
-    public ItemStack getDefaultInstance() {
-        ItemStack itemstack = super.getDefaultInstance();
-        itemstack.set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER));
-        return itemstack;
-    }
     public static int getEffectColor(Holder<MobEffect> effectHolder) {
         MobEffect effect = effectHolder.value();
         int baseColor = effect.getColor();
         return baseColor | 0xFF000000;
     }
-
-
 
 
     public static int getColorForStack(ItemStack stack) {
@@ -86,7 +80,6 @@ public class PotionTotemItem extends PotionItem implements TotemItem {
         }
         return 0xFFFFFFFF;
     }
-
 
 
 
