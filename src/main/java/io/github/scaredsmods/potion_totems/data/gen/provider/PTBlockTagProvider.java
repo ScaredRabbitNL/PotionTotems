@@ -1,6 +1,6 @@
 package io.github.scaredsmods.potion_totems.data.gen.provider;
 
-import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.PotionTotemsMain;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class PTBlockTagProvider extends BlockTagsProvider {
     public PTBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, PotionTotems.MOD_ID, existingFileHelper);
+        super(output, lookupProvider, PotionTotemsMain.MOD_ID, existingFileHelper);
     }
 
     @Override

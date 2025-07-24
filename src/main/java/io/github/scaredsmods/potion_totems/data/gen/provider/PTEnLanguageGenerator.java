@@ -1,20 +1,17 @@
 package io.github.scaredsmods.potion_totems.data.gen.provider;
 
-import com.teamresourceful.resourcefullib.common.item.tabs.ResourcefulCreativeModeTab;
 import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
-import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.PotionTotemsMain;
 import io.github.scaredsmods.potion_totems.init.PTItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class PTEnLanguageGenerator extends LanguageProvider {
 
     public PTEnLanguageGenerator(PackOutput output) {
-        super(output, PotionTotems.MOD_ID, "en_us");
+        super(output, PotionTotemsMain.MOD_ID, "en_us");
     }
 
     @Override

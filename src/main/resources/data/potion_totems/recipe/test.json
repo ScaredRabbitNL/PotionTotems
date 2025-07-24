@@ -1,7 +1,0 @@
-{
-  "type": "potion_totems:infuser",
-  "ingredients": [
-    { "tag": "potion_totems:totems" },
-    { "item": "minecraft:glass_bottle" }
-  ]
-}

@@ -3,10 +3,8 @@ package io.github.scaredsmods.potion_totems;
 
 import com.mojang.logging.LogUtils;
 import io.github.scaredsmods.potion_totems.config.PTConfig;
-import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
-import io.github.scaredsmods.potion_totems.init.PTBlocks;
-import io.github.scaredsmods.potion_totems.init.PTItems;
-import io.github.scaredsmods.potion_totems.init.PTMenuTypes;
+import io.github.scaredsmods.potion_totems.init.*;
+import io.github.scaredsmods.potion_totems.item.alchemy.PotionTotems;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -15,21 +13,24 @@ import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 
-@Mod(PotionTotems.MOD_ID)
-public class PotionTotems {
+@Mod(PotionTotemsMain.MOD_ID)
+public class PotionTotemsMain {
 
     public static final String MOD_ID = "potion_totems";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public PotionTotems(IEventBus bus, ModContainer container) {
+    public PotionTotemsMain(IEventBus bus, ModContainer container) {
 
 
+        PotionTotems.POTION_TOTEMS.init();
         PTItems.ITEMS.init();
         PTItems.TABS.init();
         PTBlocks.BLOCKS.init();
         PTBlockEntities.TYPES.init();
         PTMenuTypes.MENUS.init();
-
+        PTRecipes.SERIALIZERS.init();
+        PTRecipes.TYPES.init();
+        PTDataComponents.DATA_COMPONENT_TYPES.init();
 
         container.registerConfig(ModConfig.Type.COMMON, PTConfig.SPEC);
     }

@@ -1,8 +1,9 @@
 package io.github.scaredsmods.potion_totems.block;
 
 import com.mojang.serialization.MapCodec;
-import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.PotionTotemsMain;
 import io.github.scaredsmods.potion_totems.block.entity.BaseInfuserBlockEntity;
+import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -18,15 +19,19 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public  class BaseInfuserBlock extends BaseEntityBlock {
+public class InfuserBlock extends BaseEntityBlock {
 
+    public static final BooleanProperty[] HAS_BOTTLE = new BooleanProperty[]{
+            BlockStateProperties.HAS_BOTTLE_0
+    };
+    public static final MapCodec<InfuserBlock> CODEC = simpleCodec(InfuserBlock::new);
 
-    public static final MapCodec<BaseInfuserBlock> CODEC = simpleCodec(BaseInfuserBlock::new);
-
-    public BaseInfuserBlock(Properties properties) {
+    public InfuserBlock(Properties properties) {
         super(properties);
     }
 
@@ -38,7 +43,7 @@ public  class BaseInfuserBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BaseInfuserBlockEntity(pos, state);
+        return new InfuserBlockEntity(pos, state);
     }
 
     @Override
@@ -61,8 +66,8 @@ public  class BaseInfuserBlock extends BaseEntityBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof BaseInfuserBlockEntity baseInfuserBlockEntity) {
-                player.openMenu(new SimpleMenuProvider(baseInfuserBlockEntity, Component.translatable(PotionTotems.MOD_ID + ".gui.infuser.title")), pos);
+            if (blockEntity instanceof InfuserBlockEntity baseInfuserBlockEntity) {
+                player.openMenu(new SimpleMenuProvider(baseInfuserBlockEntity, Component.translatable(PotionTotemsMain.MOD_ID + ".gui.infuser.title")), pos);
             }else {
                 throw new IllegalStateException("Missing container provider");
             }
@@ -75,8 +80,6 @@ public  class BaseInfuserBlock extends BaseEntityBlock {
         if (level.isClientSide()){
             return null;
         }
-
-        return createTickerHelper(blockEntityType, PTBlockEntities.INFUSER_BE.get(),
-                (level2, blockPos, blockState, blockEntity) -> blockEntity.tick(level2, blockPos, blockState));
+        return null;
     }
 }

@@ -1,12 +1,16 @@
 package io.github.scaredsmods.potion_totems.block.entity;
 
-import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.PotionTotemsMain;
+
 import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
-import io.github.scaredsmods.potion_totems.init.PTItems;
+import io.github.scaredsmods.potion_totems.init.PTRecipes;
+import io.github.scaredsmods.potion_totems.recipe.InfuserRecipe;
+import io.github.scaredsmods.potion_totems.recipe.InfuserRecipeInput;
+
 import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -21,13 +25,16 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
+@Deprecated
 public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider {
 
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(4) {
@@ -39,8 +46,8 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
             }
         }
     };
-    public static final int INPUT_SLOT_1 = 0;
-    public static final int INPUT_SLOT_2 = 1;
+    public static final int TOTEM_INPUT_SLOT = 0;
+    public static final int POTION_INPUT_SLOT = 1;
     public static final int OUTPUT_SLOT_1 = 2;
     public static final int OUTPUT_SLOT_2 = 3;
 
@@ -49,7 +56,7 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
     private int maxProgress = 72;
 
     public BaseInfuserBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(PTBlockEntities.INFUSER_BE.get(), blockPos, blockState);
+        super(null, blockPos, blockState);
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -84,81 +91,79 @@ public class BaseInfuserBlockEntity extends BlockEntity implements MenuProvider 
                 craftItem();
                 resetProgress();
             }
+
         } else {
             resetProgress();
         }
     }
 
-    private void resetProgress() {
+
+    public void craftItem() {
+        Optional<RecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
+        ItemStack output1 = recipe.get().value().output();
+        ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
+
+        itemStackHandler.extractItem(TOTEM_INPUT_SLOT, 1, false);
+        itemStackHandler.extractItem(POTION_INPUT_SLOT, 1, false);
+
+        itemStackHandler.setStackInSlot(OUTPUT_SLOT_1, new ItemStack(output1.getItem(), itemStackHandler.getStackInSlot(OUTPUT_SLOT_1).getCount() + output1.getCount()));
+        itemStackHandler.setStackInSlot(OUTPUT_SLOT_2, new ItemStack(output2.getItem(), itemStackHandler.getStackInSlot(OUTPUT_SLOT_2).getCount() + output2.getCount()));
+
+    }
+
+    public void resetProgress() {
         this.progress = 0;
         this.maxProgress = 72;
     }
 
 
-    private boolean hasCraftingFinished() {
-        return this.progress >= maxProgress;
+    public boolean hasCraftingFinished() {
+        return this.progress >= this.maxProgress;
     }
 
 
-    private void increaseCraftingProgress() {
+    public void increaseCraftingProgress() {
         progress++;
     }
 
-    private boolean hasRecipe() {
 
-        // Input Slot 1 -> Output Slot 2
-        // Input Slot 2 -> Output Slot 1
-        ItemStack in1 = itemStackHandler.getStackInSlot(INPUT_SLOT_1);
-        ItemStack in2 = itemStackHandler.getStackInSlot(INPUT_SLOT_2);
+    protected boolean hasRecipe() {
+        Optional<RecipeHolder<InfuserRecipe>> recipe = getCurrentRecipe();
+        if (recipe.isEmpty()) {
+            return false;
+        }
 
-        PotionContents contents = in2.get(DataComponents.POTION_CONTENTS);
-        ItemStack output1 = new ItemStack(Items.GLASS_BOTTLE);
-        ItemStack output2 = new ItemStack(PTItems.INFUSED_TOTEM.get());
-        output2.set(DataComponents.POTION_CONTENTS, contents);
-        return (in1.is(Items.TOTEM_OF_UNDYING) &&
-                canInsertAmountIntoOutputSlot(output2.getCount(), OUTPUT_SLOT_2) && canInsertItemIntoOutputSlot(output2, OUTPUT_SLOT_2)) && 
-                (in2.is(Items.POTION) && canInsertAmountIntoOutputSlot(output1.getCount(), OUTPUT_SLOT_1) && canInsertItemIntoOutputSlot(output1, OUTPUT_SLOT_1));
-    }
-    
-    private void craftItem() {
-        // Input Slot 1 -> Output Slot 2
-        // Input Slot 2 -> Output Slot 1
 
-        ItemStack in1 = itemStackHandler.getStackInSlot(INPUT_SLOT_1);
-        ItemStack in2 = itemStackHandler.getStackInSlot(INPUT_SLOT_2);
-
-        PotionContents contents = in2.get(DataComponents.POTION_CONTENTS);
-        
+        ItemStack output2 = recipe.get().value().output();
         ItemStack output1 = new ItemStack(Items.GLASS_BOTTLE, 1);
-        ItemStack output2 = new ItemStack(PTItems.INFUSED_TOTEM.get());
-        output2.set(DataComponents.POTION_CONTENTS, contents);
 
-        itemStackHandler.extractItem(INPUT_SLOT_1, 1, false);
-        itemStackHandler.extractItem(INPUT_SLOT_2, 1, false);
-
-        itemStackHandler.setStackInSlot(OUTPUT_SLOT_1, new ItemStack(output1.getItem(),
-                itemStackHandler.getStackInSlot(OUTPUT_SLOT_1).getCount() + output1.getCount()));
-        itemStackHandler.setStackInSlot(OUTPUT_SLOT_2, new ItemStack(output2.getItem(),
-                itemStackHandler.getStackInSlot(OUTPUT_SLOT_2).getCount() + output2.getCount()));
-        
+        return canInsertAmountIntoOutputSlot(OUTPUT_SLOT_1, output1.getCount()) && canInsertAmountIntoOutputSlot(OUTPUT_SLOT_2, output2.getCount()) && canInsertItemIntoOutputSlot(output1, output2);
     }
 
-    private boolean canInsertItemIntoOutputSlot(ItemStack output, int slot) {
-        return itemStackHandler.getStackInSlot(slot).isEmpty() ||
-                itemStackHandler.getStackInSlot(slot).getItem() == output.getItem();
+    private Optional<RecipeHolder<InfuserRecipe>> getCurrentRecipe() {
+        NonNullList<ItemStack> list = NonNullList.create();
+        list.add(itemStackHandler.getStackInSlot(TOTEM_INPUT_SLOT));
+        list.add(itemStackHandler.getStackInSlot(POTION_INPUT_SLOT));
+        return this.level.getRecipeManager().getRecipeFor(PTRecipes.INFUSER_TYPE.get(), new InfuserRecipeInput(list), level);
     }
 
-    private boolean canInsertAmountIntoOutputSlot(int count, int slot) {
-        int maxCount = itemStackHandler.getStackInSlot(slot).isEmpty() ? 64 : itemStackHandler.getStackInSlot(slot).getMaxStackSize();
+
+
+    public boolean canInsertItemIntoOutputSlot(ItemStack output1, ItemStack output2) {
+        return itemStackHandler.getStackInSlot(OUTPUT_SLOT_1).isEmpty() || (itemStackHandler.getStackInSlot(OUTPUT_SLOT_1).getItem() == output1.getItem() &&
+                itemStackHandler.getStackInSlot(OUTPUT_SLOT_2).getItem() == output2.getItem());
+    }
+
+
+    public boolean canInsertAmountIntoOutputSlot(int count, int slot) {
+        int maxCount = itemStackHandler.getStackInSlot(slot).isEmpty() ? 64: itemStackHandler.getStackInSlot(slot).getMaxStackSize();
         int currentCount = itemStackHandler.getStackInSlot(slot).getCount();
-
         return maxCount >= currentCount + count;
     }
-  
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable(PotionTotems.MOD_ID + ".block_entity.infuser.title");
+        return Component.translatable(PotionTotemsMain.MOD_ID + ".block_entity.infuser.title");
     }
 
     @Override

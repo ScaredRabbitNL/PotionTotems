@@ -1,7 +1,7 @@
 package io.github.scaredsmods.potion_totems.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.scaredsmods.potion_totems.PotionTotems;
+import io.github.scaredsmods.potion_totems.PotionTotemsMain;
 import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> {
-    private static final ResourceLocation GUI_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_gui.png");
-    private static final ResourceLocation ARROW_TEXTURE = PotionTotems.id("textures/gui/infuser/infuser_arrow_progress.png");
+    private static final ResourceLocation GUI_TEXTURE = PotionTotemsMain.id("textures/gui/infuser/infuser_gui.png");
+    private static final ResourceLocation ARROW_TEXTURE = PotionTotemsMain.id("textures/gui/infuser/infuser_arrow_progress.png");
 
 
     public InfuserScreen(InfuserMenu menu, Inventory playerInventory, Component title) {
