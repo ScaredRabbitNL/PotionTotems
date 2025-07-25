@@ -18,9 +18,13 @@ public class PotionTotems {
 
 
     public static final ResourcefulRegistry<PotionTotem> POTION_TOTEMS = ResourcefulRegistries.create(PTRegistries.R_POTION_TOTEM, PotionTotemsMain.MOD_ID);
+
+
     public static final HolderRegistryEntry<PotionTotem> INVISIBILITY = POTION_TOTEMS.registerHolder("invisibility" , () -> new PotionTotem(new MobEffectInstance(MobEffects.INVISIBILITY)));
-
-
+    public static final HolderRegistryEntry<PotionTotem> NIGHT_VISION = POTION_TOTEMS.registerHolder("night_vision", () -> new PotionTotem(new MobEffectInstance(MobEffects.NIGHT_VISION)));
+    public static final HolderRegistryEntry<PotionTotem> HEALING = POTION_TOTEMS.registerHolder("healing", () -> new PotionTotem(new MobEffectInstance(MobEffects.HEAL)));
+    public static final HolderRegistryEntry<PotionTotem> HEALTH_BOOST = POTION_TOTEMS.registerHolder("health_boost", () -> new PotionTotem(new MobEffectInstance(MobEffects.HEALTH_BOOST)));
+    public static final HolderRegistryEntry<PotionTotem> FIRE_RESISTANCE = POTION_TOTEMS.registerHolder("fire_resistance", () -> new PotionTotem(new MobEffectInstance(MobEffects.FIRE_RESISTANCE)));
 
 
 

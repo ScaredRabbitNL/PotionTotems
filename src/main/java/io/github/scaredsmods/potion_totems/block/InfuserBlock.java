@@ -2,7 +2,6 @@ package io.github.scaredsmods.potion_totems.block;
 
 import com.mojang.serialization.MapCodec;
 import io.github.scaredsmods.potion_totems.PotionTotemsMain;
-import io.github.scaredsmods.potion_totems.block.entity.BaseInfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -55,7 +54,7 @@ public class InfuserBlock extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()){
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof BaseInfuserBlockEntity infuserBlockEntity) {
+            if (blockEntity instanceof InfuserBlockEntity infuserBlockEntity) {
                 infuserBlockEntity.drops();
             }
         }
@@ -80,6 +79,7 @@ public class InfuserBlock extends BaseEntityBlock {
         if (level.isClientSide()){
             return null;
         }
-        return null;
+        return createTickerHelper(blockEntityType, PTBlockEntities.BE_INFUSER.get(), (level1, pos, state1, blockEntity) ->
+                blockEntity.tick(level1, pos, state1));
     }
 }

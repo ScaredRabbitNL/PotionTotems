@@ -4,7 +4,6 @@ import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotemsMain;
-import io.github.scaredsmods.potion_totems.block.entity.BaseInfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;

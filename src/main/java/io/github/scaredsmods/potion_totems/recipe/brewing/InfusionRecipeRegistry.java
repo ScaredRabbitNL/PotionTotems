@@ -1,7 +1,6 @@
-package io.github.scaredsmods.potion_totems.recipe;
+package io.github.scaredsmods.potion_totems.recipe.brewing;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 
 import java.util.List;
 

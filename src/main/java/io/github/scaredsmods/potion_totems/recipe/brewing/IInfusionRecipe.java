@@ -1,4 +1,4 @@
-package io.github.scaredsmods.potion_totems.recipe;
+package io.github.scaredsmods.potion_totems.recipe.brewing;
 
 import net.minecraft.world.item.ItemStack;
 

@@ -1,12 +1,8 @@
-package io.github.scaredsmods.potion_totems.recipe;
+package io.github.scaredsmods.potion_totems.recipe.brewing;
 
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
-
-import java.lang.reflect.Array;
-import java.util.*;
 
 public class InfusionRecipe implements IInfusionRecipe {
 
