@@ -205,9 +205,9 @@ idea {
 
 unifiedPublishing {
     project {
-        displayName = "Potion Totems 1.0.0" // Optional, name of the file
+        displayName = "Potion Totems " + project.mod_version // Optional, name of the file
         version = project.mod_version // Optional, Inferred from project by default
-        changelog = "" // Optional, in markdown format
+        changelog = file("CHANGELOG.md").toString() // Optional, in markdown format
         releaseType = "release" // Optional, use "release", "beta" or "alpha"
         gameVersions = ["1.21.1"]
         gameLoaders = ["neoforge"]
