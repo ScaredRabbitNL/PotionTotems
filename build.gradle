@@ -1,7 +1,10 @@
 plugins {
     id 'java-library'
+    id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '1.0.21'
+    id 'net.neoforged.moddev' version '1.0.14'
+    id "me.shedaniel.unified-publishing" version "0.1.+"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -18,19 +21,18 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
-    maven { url "https://maven.shedaniel.me/" }
-    maven { url  "https://maven.resourcefulbees.com/repository/maven-public/" }
     maven {
-// Location of the maven that hosts Team Resourceful's jars.
-        name = "Team Resourceful Maven"
-        url = "https://maven.teamresourceful.com/repository/maven-public/"
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
     }
     maven {
-        url = ("https://repo.repsy.io/mvn/scaredrabbit/scaredsmods")
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
     }
-    maven {
-        url "https://maven.su5ed.dev/releases"
-    }
+    maven { url = "https://maven.resourcefulbees.com/repository/maven-public/" }
+
 }
 
 base {
@@ -43,7 +45,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     // Specify the version of NeoForge to use.
     version = project.neo_version
-    //interfaceInjectionData.from "src/main/resources/META-INF/interfaces.json"
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -133,6 +134,8 @@ dependencies {
     // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
     // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
 
+
+    implementation(jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}"))
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
@@ -147,14 +150,13 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    implementation(jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}"))
-    //implementation(jarJar"io.github.scaredsmods.rabbilib:RabbiLib-NeoForge:${rabbilib_version}")
-
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+// When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
+// See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
+tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
@@ -169,15 +171,11 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_description        : mod_description
     ]
     inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
 }
-// Include the output of "generateModMetadata" as an input directory for the build
-// this works with both building through Gradle and the IDE.
-sourceSets.main.resources.srcDir generateModMetadata
-// To avoid having to run "generateModMetadata" manually, make it run on every project reload
-neoForge.ideSyncTask generateModMetadata
 
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {

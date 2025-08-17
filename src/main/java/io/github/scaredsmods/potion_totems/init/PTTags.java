@@ -1,7 +1,6 @@
 package io.github.scaredsmods.potion_totems.init;
 
 import io.github.scaredsmods.potion_totems.PotionTotemsMain;
-import io.github.scaredsmods.potion_totems.item.alchemy.PotionTotem;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -31,14 +30,7 @@ public class PTTags {
 
     }
 
-    public static class Misc {
-        public static final TagKey<PotionTotem> POTION_TOTEMS = createTag("potion_totems");
 
-        private static TagKey<PotionTotem> createTag(String name) {
-            return TagKey.create(PTResourceKeys.RK_R_POTION_TOTEM, PotionTotemsMain.id(name));
-        }
-
-    }
 
 
 }

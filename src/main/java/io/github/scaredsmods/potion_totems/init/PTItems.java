@@ -5,14 +5,12 @@ import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
 import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
 import io.github.scaredsmods.potion_totems.PotionTotemsMain;
-import io.github.scaredsmods.potion_totems.components.PotionTotemContents;
 import io.github.scaredsmods.potion_totems.item.alchemy.PotionTotemItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
 
 public class PTItems {
 
@@ -29,15 +27,6 @@ public class PTItems {
 
     public static final RegistryEntry<CreativeModeTab> TOTEMS = TABS.register("totems", () -> new ResourcefulCreativeModeTab(PotionTotemsMain.id("totems"))
             .setItemIcon(() -> Items.TOTEM_OF_UNDYING)
-            .addContent(() ->
-                    BuiltInRegistries.POTION.holders()
-                            .filter(potion -> !potion.value().getEffects().isEmpty())
-                            .map(potion -> PotionContents.createItemStack(Items.POTION, potion))
-            )
-            .addContent(() ->
-                    PTRegistries.R_POTION_TOTEM.holders()
-                            .filter(potionTotem -> !potionTotem.value().getEffects().isEmpty())
-                            .map(potionTotem -> PotionTotemContents.createItemStack(PTItems.INFUSED_TOTEM.get(), potionTotem)))
             .addRegistry(ITEMS)
             .build());
 

@@ -4,7 +4,6 @@ package io.github.scaredsmods.potion_totems;
 import com.mojang.logging.LogUtils;
 import io.github.scaredsmods.potion_totems.config.PTConfig;
 import io.github.scaredsmods.potion_totems.init.*;
-import io.github.scaredsmods.potion_totems.item.alchemy.PotionTotems;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -22,15 +21,13 @@ public class PotionTotemsMain {
     public PotionTotemsMain(IEventBus bus, ModContainer container) {
 
 
-        PotionTotems.POTION_TOTEMS.init();
         PTItems.ITEMS.init();
         PTItems.TABS.init();
         PTBlocks.BLOCKS.init();
         PTBlockEntities.TYPES.init();
         PTMenuTypes.MENUS.init();
-        PTRecipes.SERIALIZERS.init();
-        PTRecipes.TYPES.init();
-        PTDataComponents.DATA_COMPONENT_TYPES.init();
+        
+
 
         container.registerConfig(ModConfig.Type.COMMON, PTConfig.SPEC);
     }
@@ -39,4 +36,6 @@ public class PotionTotemsMain {
     public static ResourceLocation id(String name) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
     }
+
+
 }

@@ -18,7 +18,6 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> {
     public InfuserScreen(InfuserMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
     }
-
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -43,4 +42,5 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> {
             graphics.blit(ARROW_TEXTURE, x + 35, y + 14, 0, 0 , menu.getScaledArrowProgress(), 57, 96, 57);
         }
     }
+
 }
