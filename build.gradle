@@ -135,7 +135,7 @@ dependencies {
     // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
 
 
-    implementation(jarJar("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}"))
+    implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}")
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
@@ -200,5 +200,51 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+unifiedPublishing {
+    project {
+        displayName = "Potion Totems 1.0.0" // Optional, name of the file
+        version = project.mod_version // Optional, Inferred from project by default
+        changelog = "" // Optional, in markdown format
+        releaseType = "release" // Optional, use "release", "beta" or "alpha"
+        gameVersions = ["1.21.1"]
+        gameLoaders = ["neoforge"]
+
+        mainPublication tasks.jar // Declares the publicated jar
+
+        relations {
+            depends { // Mark as a required dependency
+                // Optional, project slug or id
+                curseforge =  "resourceful-lib"
+                modrinth = "resourceful-lib"
+            }
+            includes {
+
+            } // Mark as an included dependency
+            optional {} // Mark as an optional dependency
+            conflicts {} // Mark as a conflicted dependency
+        }
+
+        curseforge {
+            token = CF_TOKEN
+            var pId = "1329049"
+            id = pId // Required, must be a string, ID of CurseForge project
+
+            mainPublication tasks.jar // Optional, Inferred from the property above by default
+
+
+        }
+
+        modrinth {
+            token = MODRINTH_TOKEN
+            id = "QNJVJEMv" // Required, must be a string, ID of Modrinth project
+
+
+            mainPublication tasks.jar // Optional, Inferred from the property above by default
+
+
+        }
     }
 }
