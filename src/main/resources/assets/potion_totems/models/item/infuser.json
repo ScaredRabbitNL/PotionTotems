@@ -2,35 +2,106 @@
   "parent": "potion_totems:block/infuser",
   "display": {
     "thirdperson_righthand": {
-      "rotation": [84, 101, -17],
-      "scale": [0.22, 0.22, 0.22]
-    },
-    "thirdperson_lefthand": {
-      "rotation": [84, 101, -17],
-      "translation": [0, 3, -1.5],
-      "scale": [0.22, 0.22, 0.22]
+      "rotation": [
+        30,
+        250,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        -2
+      ],
+      "scale": [
+        0.23,
+        0.23,
+        0.23
+      ]
     },
     "firstperson_righthand": {
-      "rotation": [0, 106, 0],
-      "translation": [-4, 5, 11],
-      "scale": [0.25, 0.19, 0.18]
-    },
-    "firstperson_lefthand": {
-      "rotation": [0, 106, 0],
-      "translation": [-4.75, 4.5, 5],
-      "scale": [0.25, 0.19, 0.18]
+      "rotation": [
+        30,
+        250,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
     },
     "gui": {
-      "rotation": [13, 130, 0],
-      "translation": [2.75, -2.5, 0],
-      "scale": [0.4, 0.4, 0.4]
+      "rotation": [
+        30,
+        250,
+        0
+      ],
+      "translation": [
+        2,
+        3,
+        0
+      ],
+      "scale": [
+        0.5325,
+        0.5325,
+        0.5325
+      ]
     },
     "ground": {
-      "scale": [0.35, 0.35, 0.35]
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        1,
+        2
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "head": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        10,
+        -8
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
     },
     "fixed": {
-      "translation": [-1.75, -1, -2],
-      "scale": [0.35, 0.35, 0.35]
+      "rotation": [
+        270,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        4,
+        -2
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
     }
   }
 }

@@ -4,119 +4,87 @@ import com.mojang.serialization.MapCodec;
 import io.github.scaredsmods.potion_totems.PotionTotemsMain;
 import io.github.scaredsmods.potion_totems.block.entity.InfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
+import io.github.scaredsmods.potion_totems.lib.block.BaseHorizontalBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
+import java.util.stream.Stream;
 
-public class InfuserBlock extends BaseEntityBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+public class InfuserBlock extends BaseHorizontalBlock {
 
     public static final MapCodec<InfuserBlock> CODEC = simpleCodec(InfuserBlock::new);
 
-    public static final EnumProperty<InfuserBlockModelType> MODEL_TYPE = EnumProperty.create("model", InfuserBlockModelType.class);
-
+    public static final VoxelShape SHAPE = Shapes.join(Stream.of(
+            Block.box(0, 12, 0, 32, 16, 16),
+            Block.box(28, 0, 0, 32, 12, 4),
+            Block.box(28, 0, 12, 32, 12, 16),
+            Block.box(0, 0, 12, 4, 12, 16),
+            Block.box(0, 0, 0, 4, 12, 4),
+            Block.box(2, 6, 4, 2, 12, 12),
+            Block.box(30, 6, 4, 30, 12, 12),
+            Stream.of(
+            Block.box(13, 2.5, 4, 13, 4.5, 14),
+            Block.box(6, 2.5, 4, 13, 2.5, 14),
+            Block.box(7, 2.5, 5, 13, 4.5, 13),
+            Block.box(6, 4.5, 4, 13, 4.5, 14)
+            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
+            Stream.of(
+            Block.box(13, 0.25, 4, 13, 2.25, 14),
+            Block.box(6, 0.25, 4, 13, 0.25, 14),
+            Block.box(7, 0.25, 5, 13, 2.25, 13),
+            Block.box(6, 2.25, 4, 13, 2.25, 14)
+            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
+            Stream.of(
+            Block.box(13, 4.75, 4, 13, 6.75, 14),
+            Block.box(6, 4.75, 4, 13, 4.75, 14),
+            Block.box(7, 4.75, 5, 13, 6.75, 13),
+            Block.box(6, 6.75, 4, 13, 6.75, 14)
+            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
+            Block.box(4, 6, 2, 28, 12, 2),
+            Block.box(4, 6, 14, 28, 12, 14)
+            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(), Stream.of(
+            Block.box(3, 16, 4, 11, 22, 12),
+            Block.box(5, 22, 6, 9, 24, 10),
+            Block.box(4, 24, 5, 10, 27, 11)
+            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(), BooleanOp.OR);
 
     public InfuserBlock(Properties properties) {
-        super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(FACING, Direction.NORTH)
-                .setValue(MODEL_TYPE, InfuserBlockModelType.MAIN));
+        super(properties, SHAPE);
+        runCalculation(SHAPE);
+    }
+
+
+    @Override
+    public RenderShape getRenderShape(BlockState blockState) {
+        return RenderShape.MODEL;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, MODEL_TYPE);
-    }
-
-    @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    protected BlockState rotate(BlockState state, Rotation rot) {
-        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-    }
-    @Override
-    protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected MapCodec<? extends BaseHorizontalBlock> codec() {
         return CODEC;
     }
+
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new InfuserBlockEntity(pos, state);
-    }
-
-    @Override
-    protected RenderShape getRenderShape(BlockState state) {
-        return state.getValue(MODEL_TYPE) == InfuserBlockModelType.MAIN ? RenderShape.MODEL : RenderShape.INVISIBLE;
-    }
-    @Override
-    public @NotNull BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (level.isClientSide) {
-            super.playerWillDestroy(level, pos, state, player);
-            return state;
-        }
-
-        InfuserBlockModelType infuserModel = state.getValue(MODEL_TYPE);
-        if (infuserModel == InfuserBlockModelType.MAIN) {
-            BlockPos otherpos = pos.relative(state.getValue(FACING).getClockWise());
-            BlockState otherstate = level.getBlockState(otherpos);
-            if (otherstate.getBlock() == this) {
-                level.setBlock(otherpos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-                level.levelEvent(player, LevelEvent.PARTICLES_DESTROY_BLOCK, otherpos, Block.getId(otherstate));
-            }
-        }
-        if (infuserModel == InfuserBlockModelType.SIDE) {
-            BlockPos otherpos = pos.relative(state.getValue(FACING).getCounterClockWise());
-            BlockState otherstate = level.getBlockState(otherpos);
-            if (otherstate.getBlock() == this) {
-                level.setBlock(otherpos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-                level.levelEvent(player, LevelEvent.PARTICLES_DESTROY_BLOCK, otherpos, Block.getId(otherstate));
-            }
-        }
-        return super.playerWillDestroy(level, pos, state, player);
-    }
-
-
-    @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-        if (!level.isClientSide) {
-            BlockPos blockpos = pos.relative(state.getValue(FACING).getClockWise());
-            level.setBlock(blockpos, state.setValue(MODEL_TYPE, InfuserBlockModelType.SIDE), Block.UPDATE_ALL);
-            level.blockUpdated(pos, Blocks.AIR);
-            state.updateNeighbourShapes(level, pos, Block.UPDATE_ALL);
-        }
     }
 
     @Override
@@ -128,12 +96,6 @@ public class InfuserBlock extends BaseEntityBlock {
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
-    }
-
-    @Deprecated
-    @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return level.getBlockState(pos.relative(state.getValue(FACING).getClockWise())).canBeReplaced();
     }
 
     @Override
@@ -158,17 +120,6 @@ public class InfuserBlock extends BaseEntityBlock {
                 blockEntity.tick(level1, pos, state1));
     }
 
-    public enum InfuserBlockModelType implements StringRepresentable {
-        MAIN, SIDE;
 
-        @Override
-        public @NotNull String getSerializedName() {
-            return name().toLowerCase(Locale.ROOT);
-        }
 
-        @Override
-        public String toString() {
-            return getSerializedName();
-        }
-    }
 }

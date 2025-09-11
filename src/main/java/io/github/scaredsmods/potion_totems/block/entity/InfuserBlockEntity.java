@@ -2,14 +2,13 @@ package io.github.scaredsmods.potion_totems.block.entity;
 
 import io.github.scaredsmods.potion_totems.init.PTBlockEntities;
 import io.github.scaredsmods.potion_totems.init.PTItems;
+import io.github.scaredsmods.potion_totems.lib.block.entity.BaseInfuserBlockEntity;
 import io.github.scaredsmods.potion_totems.screen.menu.InfuserMenu;
+import io.github.scaredsmods.potion_totems.util.PotionUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,14 +16,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class InfuserBlockEntity extends BlockEntity implements MenuProvider {
+public class InfuserBlockEntity extends BaseInfuserBlockEntity {
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -113,7 +110,7 @@ public class InfuserBlockEntity extends BlockEntity implements MenuProvider {
         ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE, 1);
 
 
-        copyPotionContents(in2, output1);
+        PotionUtils.copyPotionContents(in2, output1);
 
 
         itemStackHandler.extractItem(TOTEM_INPUT_SLOT, 1, false);
@@ -151,39 +148,10 @@ public class InfuserBlockEntity extends BlockEntity implements MenuProvider {
         ItemStack output2 = new ItemStack(Items.GLASS_BOTTLE);
         ItemStack output1 = new ItemStack(PTItems.INFUSED_TOTEM.get());
 
-        return (in1.is(Items.TOTEM_OF_UNDYING) && canInsertIntoSlot(output1, INFUSED_TOTEM_OUTPUT_SLOT, output1.getCount()))
+        return (in1.is(Items.TOTEM_OF_UNDYING) && canInsertIntoSlot(output1, INFUSED_TOTEM_OUTPUT_SLOT, output1.getCount(), itemStackHandler))
                 &&
-                (in2.is(Items.POTION) && canInsertIntoSlot(output2, BOTTLE_OUTPUT_SLOT, output2.getCount()));
+                (in2.is(Items.POTION) && canInsertIntoSlot(output2, BOTTLE_OUTPUT_SLOT, output2.getCount(), itemStackHandler));
     }
-
-
-    public static void copyPotionContents(ItemStack source, ItemStack target) {
-        if (source.has(DataComponents.POTION_CONTENTS)) {
-            PotionContents contents = source.get(DataComponents.POTION_CONTENTS);
-            target.set(DataComponents.POTION_CONTENTS, contents);
-            if (source.has(DataComponents.CUSTOM_NAME)) {
-                target.set(DataComponents.CUSTOM_NAME, source.get(DataComponents.CUSTOM_NAME));
-            }
-        }
-    }
-    private boolean canInsertIntoSlot (ItemStack output, int slot, int count) {
-        return canInsertItemIntoOutputSlot(output, slot) && canInsertAmountIntoOutputSlot(count, slot);
-    }
-
-
-
-    private boolean canInsertItemIntoOutputSlot(ItemStack output, int slot) {
-        return itemStackHandler.getStackInSlot(slot).isEmpty() ||
-                itemStackHandler.getStackInSlot(slot).getItem() == output.getItem();
-    }
-
-    private boolean canInsertAmountIntoOutputSlot(int count, int slot) {
-        int maxCount = itemStackHandler.getStackInSlot(slot).isEmpty() ? 64 : itemStackHandler.getStackInSlot(slot).getMaxStackSize();
-        int currentCount = itemStackHandler.getStackInSlot(slot).getCount();
-
-        return maxCount >= currentCount + count;
-    }
-
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
@@ -193,8 +161,6 @@ public class InfuserBlockEntity extends BlockEntity implements MenuProvider {
         maxProgress = tag.getInt("potion_totems.infuser.max_progress");
     }
 
-
-
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         tag.put("potion_totems.infuser.inventory", itemStackHandler.serializeNBT(registries));
@@ -202,11 +168,6 @@ public class InfuserBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("potion_totems.infuser.max_progress", maxProgress);
 
         super.saveAdditional(tag, registries);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.translatable("potion_totems.be.infuser.name");
     }
 
     @Override

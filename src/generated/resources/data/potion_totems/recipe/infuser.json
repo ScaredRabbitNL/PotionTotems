@@ -1,23 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " T ",
-    "LLL",
-    "LBL"
-  ],
+  "category": "misc",
   "key": {
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
     "L": {
       "tag": "minecraft:logs"
     },
     "T": {
       "item": "minecraft:totem_of_undying"
-    },
-    "B": {
-      "item": "minecraft:glass_bottle"
     }
   },
+  "pattern": [
+    " T ",
+    "LLL",
+    "LBL"
+  ],
   "result": {
-    "id": "potion_totems:infuser",
-    "count": 1
+    "count": 1,
+    "id": "potion_totems:infuser"
   }
 }

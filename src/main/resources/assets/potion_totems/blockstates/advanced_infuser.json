@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "potion_totems:block/advanced_infuser" },
+    "facing=south": { "model": "potion_totems:block/advanced_infuser", "y": 180 },
+    "facing=west":  { "model": "potion_totems:block/advanced_infuser", "y": 270 },
+    "facing=east":  { "model": "potion_totems:block/advanced_infuser", "y": 90 }
+  }
+}

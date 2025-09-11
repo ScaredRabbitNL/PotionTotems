@@ -23,7 +23,7 @@ public class PTItems {
 
 
     public static final RegistryEntry<Item> INFUSER_BLOCK_ITEM = ITEMS.register("infuser", () -> new BlockItem(PTBlocks.INFUSER.get(), new Item.Properties()));
-
+    public static final RegistryEntry<Item> ADVANCED_INFUSER_BLOCK_ITEM = ITEMS.register("advanced_infuser", () -> new BlockItem(PTBlocks.ADVANCED_INFUSER.get(), new Item.Properties()));
 
     public static final RegistryEntry<CreativeModeTab> TOTEMS = TABS.register("totems", () -> new ResourcefulCreativeModeTab(PotionTotemsMain.id("totems"))
             .setItemIcon(() -> Items.TOTEM_OF_UNDYING)

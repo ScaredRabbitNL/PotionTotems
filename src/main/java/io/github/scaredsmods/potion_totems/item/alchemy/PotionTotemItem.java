@@ -1,32 +1,39 @@
 package io.github.scaredsmods.potion_totems.item.alchemy;
 
 
-import io.github.scaredsmods.potion_totems.config.PTConfig;
+import io.github.scaredsmods.potion_totems.config.PTCommonConfig;
+import io.github.scaredsmods.potion_totems.init.PTConfigs;
 import io.github.scaredsmods.potion_totems.item.TotemItem;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 
 import java.util.List;
 
-public class PotionTotemItem extends PotionItem implements TotemItem {
-
-
-
+public class PotionTotemItem extends Item implements TotemItem {
 
     public PotionTotemItem() {
         super(new Properties().stacksTo(1).rarity(Rarity.RARE).component(DataComponents.POTION_CONTENTS, PotionContents.EMPTY));
-
     }
 
+    @Override
+    public ItemStack getDefaultInstance() {
+        ItemStack stack = super.getDefaultInstance();
+        stack.set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER));
+        return stack;
+    }
 
     @Override
     public boolean canActivate(LivingEntity entity) {
@@ -35,7 +42,6 @@ public class PotionTotemItem extends PotionItem implements TotemItem {
 
     @Override
     public void activateTotem(LivingEntity entity, ItemStack stack) {
-
         if (stack != null) {
             if (entity instanceof ServerPlayer) {
                 ((ServerPlayer) entity).awardStat(Stats.ITEM_USED.get(this));
@@ -44,38 +50,37 @@ public class PotionTotemItem extends PotionItem implements TotemItem {
             entity.setHealth(entity.getMaxHealth() / 2F);
             entity.removeAllEffects();
             addEffects(entity, stack);
+            addVanillaEffects(entity);
             entity.level().broadcastEntityEvent(entity, (byte)35);
             stack.shrink(1);
-
         }
     }
 
-
-
-    private void addEffects(LivingEntity entity, ItemStack stack) {
-        Iterable<MobEffectInstance> customPEffects = stack.get(DataComponents.POTION_CONTENTS).getAllEffects();
-        getEffects(entity, customPEffects);
-    }
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-
-        PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
-
-        getTooltipTexts(context, tooltipComponents, potionContents);
-
-
-    }
-
-    public void getEffects(LivingEntity entity, Iterable<MobEffectInstance> effects) {
-        for (MobEffectInstance instance : effects) {
-            Holder<MobEffect> effect = instance.getEffect();
-            entity.addEffect(new MobEffectInstance(effect, PTConfig.duration, PTConfig.amplifier));
+        PotionContents potioncontents = stack.get(DataComponents.POTION_CONTENTS);
+        if (potioncontents != null) {
+            potioncontents.addPotionTooltip(tooltipComponents::add, 1.0F, context.tickRate());
         }
     }
+    @Override
+    public String getDescriptionId(ItemStack stack) {
+        return Potion.getName(stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion(), this.getDescriptionId() + ".effect.");
+    }
 
-    private void getTooltipTexts(Item.TooltipContext context, List<Component> tooltipComponents, PotionContents contents) {
+    private void addVanillaEffects(LivingEntity entity) {
+        entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
+        entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+        entity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800));
+    }
+
+    private void addEffects(LivingEntity entity, ItemStack stack) {
+        PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
+        PTCommonConfig.InfusedTotemSection infusedTotemSection = PTConfigs.ptCommonConfig.infusedTotemSection;
         if (contents != null) {
-            contents.addPotionTooltip(tooltipComponents::add, 1.0F, context.tickRate());
+            if (contents.hasEffects()) {
+                contents.forEachEffect(instance -> entity.addEffect(new MobEffectInstance(instance.getEffect(),infusedTotemSection.duration.get(), infusedTotemSection.amplifier.get())));
+            }
         }
     }
 

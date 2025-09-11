@@ -2,13 +2,11 @@ package io.github.scaredsmods.potion_totems;
 
 
 import com.mojang.logging.LogUtils;
-import io.github.scaredsmods.potion_totems.config.PTConfig;
 import io.github.scaredsmods.potion_totems.init.*;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 
@@ -26,10 +24,10 @@ public class PotionTotemsMain {
         PTBlocks.BLOCKS.init();
         PTBlockEntities.TYPES.init();
         PTMenuTypes.MENUS.init();
-        
-
-
-        container.registerConfig(ModConfig.Type.COMMON, PTConfig.SPEC);
+        PTPotions.POTIONS.init();
+        PTVillagers.VILLAGER_PROFESSIONS.init();
+        PTVillagers.POI_TYPES.init();
+        PTConfigs.init();
     }
 
 

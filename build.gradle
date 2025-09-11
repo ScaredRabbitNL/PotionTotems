@@ -32,7 +32,13 @@ repositories {
         url = "https://modmaven.dev"
     }
     maven { url = "https://maven.resourcefulbees.com/repository/maven-public/" }
-
+    maven {
+        name = "FzzyMaven"
+        url = uri("https://maven.fzzyhmstrs.me/")
+    }
+    maven {
+        url = uri("https://thedarkcolour.github.io/KotlinForForge/")
+    }
 }
 
 base {
@@ -136,6 +142,7 @@ dependencies {
 
 
     implementation("com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}")
+    implementation("me.fzzyhmstrs:fzzy_config:${project.fzzy_config_version}+neoforge")
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
@@ -207,7 +214,7 @@ unifiedPublishing {
     project {
         displayName = "Potion Totems " + project.mod_version // Optional, name of the file
         version = project.mod_version // Optional, Inferred from project by default
-        changelog = file("CHANGELOG.md").toString() // Optional, in markdown format
+        changelog = file("CHANGELOG.md").getText()// Optional, in markdown format
         releaseType = "release" // Optional, use "release", "beta" or "alpha"
         gameVersions = ["1.21.1"]
         gameLoaders = ["neoforge"]
@@ -217,8 +224,13 @@ unifiedPublishing {
         relations {
             depends { // Mark as a required dependency
                 // Optional, project slug or id
-                curseforge =  "resourceful-lib"
+                curseforge = "resourceful-lib"
                 modrinth = "resourceful-lib"
+            }
+
+            depends {
+                curseforge = "fzzy_config"
+                modrinth = "fzzy_config"
             }
             includes {
 
