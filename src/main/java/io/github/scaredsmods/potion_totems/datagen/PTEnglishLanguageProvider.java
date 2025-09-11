@@ -2,6 +2,7 @@ package io.github.scaredsmods.potion_totems.datagen;
 
 import io.github.scaredsmods.potion_totems.PotionTotemsMain;
 import io.github.scaredsmods.potion_totems.init.PTBlocks;
+import io.github.scaredsmods.potion_totems.init.PTPotions;
 import io.github.scaredsmods.potion_totems.init.PTVillagers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -28,6 +29,19 @@ public class PTEnglishLanguageProvider extends LanguageProvider {
                     .collect(Collectors.joining(" "));
 
             add("item.potion_totems.infused_totem.effect." + effectName, "Infused Totem of " + formattedName);
+        });
+
+        PTPotions.POTIONS.stream().forEach(potionRegistryEntry -> {
+            ResourceLocation id = potionRegistryEntry.getId();
+            String potionName = id.getPath();
+
+            String formattedName = Arrays.stream(potionName.split("_"))
+                    .map(word -> word.substring(0,1).toUpperCase() + word.substring(1))
+                    .collect(Collectors.joining(" "));
+
+            add("item.minecraft.potion.effect." + potionName, "Potion of" + formattedName);
+            add("item.minecraft.splash_potion.effect." + potionName, "Splash Potion of" + formattedName);
+            add("item.minecraft.lingering_potion.effect." + potionName, "Lingering Potion of" + formattedName);
         });
 
         add("item.potion_totems.infused_totem.effect.empty", "Infused Totem");
